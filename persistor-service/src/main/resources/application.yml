@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: PERSISTOR-SERVICE
+  config:
+    import: optional:configserver:http://localhost:8999
+  activemq:
+    broker-url: tcp://localhost:61616
+    packages.trust-all: true
+
+server:
+  port: 9000
+
+unik:
+  jms-broker:
+    in-queue: ${spring.application.name}-IN
