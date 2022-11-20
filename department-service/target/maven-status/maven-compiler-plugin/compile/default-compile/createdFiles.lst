@@ -1,9 +1,0 @@
-com\uniktech\department\config\SwaggerConfig.class
-com\uniktech\department\config\JmsConfig.class
-com\uniktech\department\entity\Department.class
-com\uniktech\department\repository\DepartmentRepository.class
-com\uniktech\department\DepartmentServiceApplication.class
-com\uniktech\department\service\Listener.class
-com\uniktech\department\config\UnikJmsProperties.class
-com\uniktech\department\controller\DepartmentController.class
-com\uniktech\department\service\DepartmentService.class
