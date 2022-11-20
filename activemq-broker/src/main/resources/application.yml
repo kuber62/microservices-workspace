@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: JMS-BROKER
+  jmx:
+    enable: true
+
+jms-broker:
+  broker-uri: broker:(tcp://localhost:61616)?persistent=false
+
+hawtio:
+  authenticationEnabled: false
+
+management:
+  endpoint:
+    hawtio:
+      enabled: true
+    jolokia:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: actuator,info,health,keepAlive,metrics,hawtio,jolokia
+
+server:
+  port: 9005
