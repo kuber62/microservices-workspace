@@ -1,0 +1,20 @@
+server:
+  port: 8999
+  
+spring:
+  application:
+    name: CONFIG-SERVER
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/kuber62/config-server.git
+          clone-on-start: true
+          default-label: master
+               
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  
