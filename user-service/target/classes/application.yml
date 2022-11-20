@@ -1,0 +1,26 @@
+feign:
+  compression:
+    response:
+      enabled: true
+  circuitBreaker:
+    enabled: true
+
+server:
+  port: 9002
+
+spring:
+  application:
+    name: USER-SERVICE
+  config:
+    import: optional:configserver:http://localhost:8999
+  sleuth:
+    feign:
+      enabled: true
+  activemq:
+    broker-url: tcp://localhost:61616
+    packages.trust-all: true
+
+unik:
+  jms-broker:
+    in-queue: ${spring.application.name}-IN
+    out-queue: PERSISTOR-SERVICE-IN

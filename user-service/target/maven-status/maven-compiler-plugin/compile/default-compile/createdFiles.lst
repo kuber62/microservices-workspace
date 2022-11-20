@@ -1,0 +1,13 @@
+com\uniktech\user\feign\DepartmentClient.class
+com\uniktech\user\dto\UserResponse.class
+com\uniktech\user\UserServiceApplication.class
+com\uniktech\user\config\UnikJmsProperties.class
+com\uniktech\user\repository\UserRepository.class
+com\uniktech\user\config\JmsConfig.class
+com\uniktech\user\service\UserService.class
+com\uniktech\user\config\UnikServiceProperties.class
+com\uniktech\user\service\Listener.class
+com\uniktech\user\dto\Department.class
+com\uniktech\user\entity\Users.class
+com\uniktech\user\config\SwaggerConfig.class
+com\uniktech\user\controller\UserController.class
