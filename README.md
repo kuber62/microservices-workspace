@@ -9,7 +9,11 @@ Tomcat - Embedded Servlet Container
 Feign Client - Inter-service synchronous REST calls
 
 Service Discovery - Eureka Client / Server - http://localhost:8761/
+
 Config Server - Spring Cloud - http://localhost:8999/
+
 API Gateway - Spring Cloud - http://localhost:9187/
+
 Distributed Messaging - Active MQ - JMS Broker - http://localhost:9005/
+
 Distributed Log Tracing - Spring Cloud Sleuth & Zipkin Stream Server - http://127.0.0.1:9411/
