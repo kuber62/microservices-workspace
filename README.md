@@ -5,7 +5,9 @@ This repo will help someone to get an understanding of the components needed in 
 Below are the details of the components & tech-stack used for development in this repo :-
 
 H2 - Embedded Relational Database
+
 Tomcat - Embedded Servlet Container
+
 Feign Client - Inter-service synchronous REST calls
 
 Service Discovery - Eureka Client / Server - http://localhost:8761/
