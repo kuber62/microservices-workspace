@@ -10,14 +10,14 @@ Below are the details of the components & tech-stack used for development in thi
 
 3. Feign Client - Inter-service synchronous REST calls
 
-4. Service Discovery - Eureka Client / Server - http://localhost:8761/
+4. Distributed Messaging - Active MQ - JMS Broker - http://localhost:9005/
 
-5. Config Server - Spring Cloud - http://localhost:8999/
+5. Service Discovery - Eureka Client / Server - http://localhost:8761/
 
-6. API Gateway - Spring Cloud - http://localhost:9187/
+6. Config Server - Spring Cloud - http://localhost:8999/
 
-7. Circuit Breaker - Spring Cloud Resilience4j
+7. API Gateway - Spring Cloud - http://localhost:9187/
 
-8. Distributed Messaging - Active MQ - JMS Broker - http://localhost:9005/
+8. Circuit Breaker - Spring Cloud Resilience4j
 
 9. Distributed Log Tracing - Spring Cloud Sleuth & Zipkin Stream Server - http://127.0.0.1:9411/
