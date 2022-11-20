@@ -16,6 +16,8 @@ Below are the details of the components & tech-stack used for development in thi
 
 6. API Gateway - Spring Cloud - http://localhost:9187/
 
-7. Distributed Messaging - Active MQ - JMS Broker - http://localhost:9005/
+7. Circuit Breaker - Spring Cloud Resilience4j
 
-8. Distributed Log Tracing - Spring Cloud Sleuth & Zipkin Stream Server - http://127.0.0.1:9411/
+8. Distributed Messaging - Active MQ - JMS Broker - http://localhost:9005/
+
+9. Distributed Log Tracing - Spring Cloud Sleuth & Zipkin Stream Server - http://127.0.0.1:9411/
