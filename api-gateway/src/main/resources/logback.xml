@@ -22,6 +22,10 @@
         </encoder>
     </appender>
 
+    <logger name="org.springframework" level="info" additivity="false">
+        <appender-ref ref="ROLLING-FILE"/>
+    </logger>
+
     <logger name="com.uniktech" level="debug" additivity="false">
         <appender-ref ref="ROLLING-FILE"/>
     </logger>

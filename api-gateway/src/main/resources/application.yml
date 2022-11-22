@@ -7,16 +7,21 @@ management:
       enabled: true
     rateLimiters:
       enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 
 spring:
   application:
     name: API-GATEWAY
   config:
     import: optional:configserver:http://localhost:8999
+  zipkin:
+    base-url: http://localhost:9411/
   cloud:
     gateway:
       httpclient:
@@ -50,3 +55,63 @@ spring:
               args:
                 name: DEPARTMENT-SERVICE
                 fallbackUri: forward:/fallbacks/departmentServiceFallback
+
+---
+spring:
+  profiles: docker
+  application:
+    name: API-GATEWAY
+  config:
+    import: optional:configserver:http://cloud-config:8999
+  zipkin:
+    base-url: http://zipkin-server:9411/
+  cloud:
+    gateway:
+      httpclient:
+        pool:
+          max-idle-time: 10000
+      routes:
+        - id: PERSISTOR-SERVICE
+          uri: lb://PERSISTOR-SERVICE
+          predicates:
+            - Path=/search/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: PERSISTOR-SERVICE
+                fallbackUri: forward:/fallbacks/persistorServiceFallback
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/users/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: USER-SERVICE
+                fallbackUri: forward:/fallbacks/userServiceFallback
+        - id: DEPARTMENT-SERVICE
+          uri: lb://DEPARTMENT-SERVICE
+          predicates:
+            - Path=/departments/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: DEPARTMENT-SERVICE
+                fallbackUri: forward:/fallbacks/departmentServiceFallback
+
+server:
+  port: 9187
+
+management:
+  health:
+    circuitBreakers:
+      enabled: true
+    rateLimiters:
+      enabled: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-service-registry:8761/eureka/

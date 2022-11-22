@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: CONFIG-SERVER
+  sleuth:
+    config:
+      server:
+        enabled: true
   cloud:
     config:
       server:
@@ -17,4 +21,33 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/  
+      defaultZone: http://localhost:8761/eureka/
+
+---
+spring:
+  profiles: docker
+  application:
+    name: CONFIG-SERVER
+  zipkin:
+    base-url: http://zipkin-server:9411/
+  sleuth:
+    config:
+      server:
+        enabled: true
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/kuber62/config-server.git
+          clone-on-start: true
+          default-label: master
+
+server:
+  port: 8999
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-service-registry:8761/eureka/

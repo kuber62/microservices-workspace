@@ -3,9 +3,34 @@ spring:
     name: JMS-BROKER
   jmx:
     enable: true
+  zipkin:
+    base-url: http://localhost:9411/
 
 jms-broker:
   broker-uri: broker:(tcp://localhost:61616)?persistent=false
+
+hawtio:
+  authenticationEnabled: false
+
+management:
+  endpoint:
+    hawtio:
+      enabled: true
+    jolokia:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: actuator,info,health,keepAlive,metrics,hawtio,jolokia
+
+server:
+  port: 9005
+
+---
+spring:
+  profiles: docker
+  zipkin:
+    base-url: http://zipkin-server:9411/
 
 hawtio:
   authenticationEnabled: false
