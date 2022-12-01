@@ -26,6 +26,9 @@ spring:
     packages.trust-all: true
 
 unik:
+  service:
+    log:
+      name: department-service
   jms-broker:
     in-queue: ${spring.application.name}-IN
     out-queue: PERSISTOR-SERVICE-IN
@@ -37,6 +40,8 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+logging:
+  config: http://localhost:8999/config-server/default/master/logback-spring.xml
 ---
 spring:
   profiles: docker
@@ -44,6 +49,7 @@ spring:
     name: DEPARTMENT-SERVICE
   config:
     import: optional:configserver:http://cloud-config:8999
+    use-legacy-processing: true
   zipkin:
     base-url: http://zipkin-server:9411/
   sleuth:
@@ -57,6 +63,9 @@ spring:
     packages.trust-all: true
 
 unik:
+  service:
+    log:
+      name: department-service
   jms-broker:
     in-queue: ${spring.application.name}-IN
     out-queue: PERSISTOR-SERVICE-IN
@@ -77,3 +86,6 @@ feign:
 
 server:
   port: 9001
+
+logging:
+  config: http://cloud-config:8999/config-server/docker/master/logback-spring.xml

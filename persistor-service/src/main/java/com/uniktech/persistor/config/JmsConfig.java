@@ -1,6 +1,7 @@
 package com.uniktech.persistor.config;
 
 import com.netflix.discovery.converters.Auto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import javax.jms.Destination;
 @EnableJms
 @EnableConfigurationProperties({ActiveMQProperties.class, UnikJmsProperties.class})
 @Configuration
+@Slf4j
 public class JmsConfig {
 
     @Autowired
@@ -29,6 +31,7 @@ public class JmsConfig {
 
     @Bean
     public Destination inQueueDestination(){
+        log.info("Creating input queue - {}", unikJmsProperties.getInQueue());
         return new ActiveMQQueue(unikJmsProperties.getInQueue());
     }
 }

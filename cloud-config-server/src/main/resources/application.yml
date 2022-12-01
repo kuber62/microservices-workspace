@@ -23,9 +23,15 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+unik:
+  service:
+    log:
+      name: spring-cloud-config-server
 ---
 spring:
-  profiles: docker
+  config:
+    activate:
+      on-profile: docker
   application:
     name: CONFIG-SERVER
   zipkin:
@@ -51,3 +57,8 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://eureka-service-registry:8761/eureka/
+
+unik:
+  service:
+    log:
+      name: spring-cloud-config-server

@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} cloud-config-server.jar
-ENTRYPOINT ["java","-jar","/cloud-config-server.jar"]
+ENTRYPOINT ["java","-jar","/cloud-config-server.jar","--spring.profiles.active=docker"]
 EXPOSE 8999

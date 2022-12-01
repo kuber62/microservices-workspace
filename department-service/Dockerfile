@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} department-service.jar
-ENTRYPOINT ["java","-jar","/department-service.jar"]
+ENTRYPOINT ["java","-jar","/department-service.jar","--spring.profiles.active=docker"]
 EXPOSE 9001

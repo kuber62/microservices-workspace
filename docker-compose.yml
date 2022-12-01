@@ -1,0 +1,110 @@
+version: '3'
+
+services:
+  zipkin-server:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+  jms-broker:
+    container_name: jms-broker
+    build:
+      context: ./activemq-broker
+      dockerfile: Dockerfile
+    ports:
+      # ui
+      - "9005:9005"
+      # amqp
+      - "5672:5672"
+      # stomp
+      - "61613:61613"
+      # ws
+      - "61614:61614"
+      # mqtt
+      - "1883:1883"
+      # jms
+      - "61616:61616"
+  eureka-service-registry:
+    container_name: eureka-service-registry
+    build:
+      context: ./eureka-service-registry
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+  cloud-config:
+    container_name: cloud-config
+    build:
+      context: ./cloud-config-server
+      dockerfile: Dockerfile
+    ports:
+      - "8999:8999"
+    depends_on:
+      - eureka-service-registry
+    links:
+      - "zipkin-server"
+      - "eureka-service-registry"
+  persistor-service:
+    container_name: persistor-service
+    build:
+      context: ./persistor-service
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    depends_on:
+      - eureka-service-registry
+      - jms-broker
+      - cloud-config
+    links:
+      - "zipkin-server"
+      - "jms-broker"
+      - "eureka-service-registry"
+      - "cloud-config"
+  department-service:
+    container_name: department-service
+    build:
+      context: ./department-service
+      dockerfile: Dockerfile
+    ports:
+      - "9001:9001"
+    depends_on:
+      - eureka-service-registry
+      - jms-broker
+      - cloud-config
+    links:
+      - "zipkin-server"
+      - "jms-broker"
+      - "eureka-service-registry"
+      - "cloud-config"
+  user-service:
+    container_name: user-service
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "9002:9002"
+    depends_on:
+      - eureka-service-registry
+      - jms-broker
+      - cloud-config
+    links:
+      - "zipkin-server"
+      - "jms-broker"
+      - "eureka-service-registry"
+      - "cloud-config"
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "9187:9187"
+    depends_on:
+      - eureka-service-registry
+      - cloud-config
+    links:
+      - "zipkin-server"
+      - "jms-broker"
+      - "eureka-service-registry"
+      - "cloud-config"
+      - "persistor-service"
+      - "department-service"
+      - "user-service"

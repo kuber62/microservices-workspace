@@ -56,6 +56,13 @@ spring:
                 name: DEPARTMENT-SERVICE
                 fallbackUri: forward:/fallbacks/departmentServiceFallback
 
+unik:
+  service:
+    log:
+      name: api-gateway
+
+logging:
+  config: http://localhost:8999/config-server/default/master/logback-spring.xml
 ---
 spring:
   profiles: docker
@@ -63,6 +70,7 @@ spring:
     name: API-GATEWAY
   config:
     import: optional:configserver:http://cloud-config:8999
+    use-legacy-processing: true
   zipkin:
     base-url: http://zipkin-server:9411/
   cloud:
@@ -115,3 +123,11 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://eureka-service-registry:8761/eureka/
+
+unik:
+  service:
+    log:
+      name: api-gateway
+
+logging:
+  config: http://cloud-config:8999/config-server/docker/master/logback-spring.xml

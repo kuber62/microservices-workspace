@@ -26,11 +26,18 @@ management:
 server:
   port: 9005
 
+unik:
+  service:
+    log:
+      name: jms-broker
 ---
 spring:
   profiles: docker
   zipkin:
     base-url: http://zipkin-server:9411/
+
+jms-broker:
+  broker-uri: broker:(tcp://jms-broker:61616)?persistent=false
 
 hawtio:
   authenticationEnabled: false
@@ -48,3 +55,8 @@ management:
 
 server:
   port: 9005
+
+unik:
+  service:
+    log:
+      name: jms-broker

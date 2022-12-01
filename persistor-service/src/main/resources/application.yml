@@ -17,6 +17,9 @@ server:
   port: 9000
 
 unik:
+  service:
+    log:
+      name: persistor-service
   jms-broker:
     in-queue: ${spring.application.name}-IN
 
@@ -27,6 +30,8 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+logging:
+  config: http://localhost:8999/config-server/default/master/logback-spring.xml
 ---
 spring:
   profiles: docker
@@ -34,6 +39,7 @@ spring:
     name: PERSISTOR-SERVICE
   config:
     import: optional:configserver:http://cloud-config:8999
+    use-legacy-processing: true
   zipkin:
     base-url: http://zipkin-server:9411/
   sleuth:
@@ -48,6 +54,9 @@ server:
   port: 9000
 
 unik:
+  service:
+    log:
+      name: persistor-service
   jms-broker:
     in-queue: ${spring.application.name}-IN
 
@@ -57,3 +66,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://eureka-service-registry:8761/eureka/
+
+logging:
+  config: http://cloud-config:8999/config-server/docker/master/logback-spring.xml
