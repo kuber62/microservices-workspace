@@ -24,4 +24,6 @@ Below are the details of the components & Spring Boot related technologies used 
 
 10. Swagger
 
-11. Docker
+11. Docker Containers
+
+12. Docker Compose
