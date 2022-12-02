@@ -9,9 +9,6 @@ spring:
     messaging:
       rabbit:
         enabled: true
-  activemq:
-    broker-url: tcp://localhost:61616
-    packages.trust-all: true
 
 server:
   port: 9000
@@ -22,6 +19,7 @@ unik:
       name: persistor-service
   jms-broker:
     in-queue: ${spring.application.name}-IN
+    broker-uri: tcp://localhost:61616
 
 eureka:
   client:
@@ -29,9 +27,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
-
-logging:
-  config: http://localhost:8999/config-server/default/master/logback-spring.xml
 ---
 spring:
   profiles: docker
@@ -46,9 +41,6 @@ spring:
     messaging:
       rabbit:
         enabled: true
-  activemq:
-    broker-url: tcp://jms-broker:61616
-    packages.trust-all: true
 
 server:
   port: 9000
@@ -59,6 +51,7 @@ unik:
       name: persistor-service
   jms-broker:
     in-queue: ${spring.application.name}-IN
+    broker-uri: tcp://jms-broker:61616
 
 eureka:
   client:
@@ -66,6 +59,3 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://eureka-service-registry:8761/eureka/
-
-logging:
-  config: http://cloud-config:8999/config-server/docker/master/logback-spring.xml

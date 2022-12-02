@@ -14,7 +14,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 
 @EnableJms
-@EnableConfigurationProperties({ActiveMQProperties.class, UnikJmsProperties.class})
+@EnableConfigurationProperties(UnikJmsProperties.class)
 @Configuration
 @Slf4j
 public class JmsConfig {
@@ -25,6 +25,7 @@ public class JmsConfig {
     @Bean
     public ConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
+        activeMQConnectionFactory.setBrokerURL(unikJmsProperties.getBrokerUri());
         return activeMQConnectionFactory;
     }
 

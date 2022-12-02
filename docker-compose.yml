@@ -5,6 +5,31 @@ services:
     image: openzipkin/zipkin
     ports:
       - "9411:9411"
+    networks:
+      - default
+  eureka-service-registry:
+    container_name: eureka-service-registry
+    build:
+      context: ./eureka-service-registry
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - default
+  cloud-config:
+    container_name: cloud-config
+    build:
+      context: ./cloud-config-server
+      dockerfile: Dockerfile
+    ports:
+      - "8999:8999"
+    depends_on:
+      - eureka-service-registry
+    links:
+      - "zipkin-server"
+      - "eureka-service-registry"
+    networks:
+      - default
   jms-broker:
     container_name: jms-broker
     build:
@@ -23,73 +48,8 @@ services:
       - "1883:1883"
       # jms
       - "61616:61616"
-  eureka-service-registry:
-    container_name: eureka-service-registry
-    build:
-      context: ./eureka-service-registry
-      dockerfile: Dockerfile
-    ports:
-      - "8761:8761"
-  cloud-config:
-    container_name: cloud-config
-    build:
-      context: ./cloud-config-server
-      dockerfile: Dockerfile
-    ports:
-      - "8999:8999"
-    depends_on:
-      - eureka-service-registry
-    links:
-      - "zipkin-server"
-      - "eureka-service-registry"
-  persistor-service:
-    container_name: persistor-service
-    build:
-      context: ./persistor-service
-      dockerfile: Dockerfile
-    ports:
-      - "9000:9000"
-    depends_on:
-      - eureka-service-registry
-      - jms-broker
-      - cloud-config
-    links:
-      - "zipkin-server"
-      - "jms-broker"
-      - "eureka-service-registry"
-      - "cloud-config"
-  department-service:
-    container_name: department-service
-    build:
-      context: ./department-service
-      dockerfile: Dockerfile
-    ports:
-      - "9001:9001"
-    depends_on:
-      - eureka-service-registry
-      - jms-broker
-      - cloud-config
-    links:
-      - "zipkin-server"
-      - "jms-broker"
-      - "eureka-service-registry"
-      - "cloud-config"
-  user-service:
-    container_name: user-service
-    build:
-      context: ./user-service
-      dockerfile: Dockerfile
-    ports:
-      - "9002:9002"
-    depends_on:
-      - eureka-service-registry
-      - jms-broker
-      - cloud-config
-    links:
-      - "zipkin-server"
-      - "jms-broker"
-      - "eureka-service-registry"
-      - "cloud-config"
+    networks:
+      - default
   api-gateway:
     container_name: api-gateway
     build:
@@ -102,9 +62,74 @@ services:
       - cloud-config
     links:
       - "zipkin-server"
-      - "jms-broker"
       - "eureka-service-registry"
       - "cloud-config"
-      - "persistor-service"
-      - "department-service"
-      - "user-service"
+    networks:
+      - default
+  persistor-service:
+    container_name: persistor-service
+    build:
+      context: ./persistor-service
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    depends_on:
+      - eureka-service-registry
+      - cloud-config
+      - jms-broker
+    links:
+      - "zipkin-server"
+      - "eureka-service-registry"
+      - "cloud-config"
+      - "jms-broker"
+      - "api-gateway"
+    networks:
+      - default
+  department-service:
+    container_name: department-service
+    build:
+      context: ./department-service
+      dockerfile: Dockerfile
+    ports:
+      - "9001:9001"
+    depends_on:
+      - eureka-service-registry
+      - cloud-config
+      - jms-broker
+    links:
+      - "zipkin-server"
+      - "eureka-service-registry"
+      - "cloud-config"
+      - "jms-broker"
+      - "api-gateway"
+    networks:
+      - default
+  user-service:
+    container_name: user-service
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "9002:9002"
+    depends_on:
+      - eureka-service-registry
+      - cloud-config
+      - jms-broker
+    links:
+      - "zipkin-server"
+      - "eureka-service-registry"
+      - "cloud-config"
+      - "jms-broker"
+      - "api-gateway"
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "false"
+      com.docker.network.bridge.host_binding_ipv4: "0.0.0.0"
+      com.docker.network.bridge.name: "br14"
+      com.docker.network.driver.mtu: "1500"

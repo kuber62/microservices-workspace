@@ -6,9 +6,6 @@ spring:
   zipkin:
     base-url: http://localhost:9411/
 
-jms-broker:
-  broker-uri: broker:(tcp://localhost:61616)?persistent=false
-
 hawtio:
   authenticationEnabled: false
 
@@ -30,15 +27,14 @@ unik:
   service:
     log:
       name: jms-broker
+  jms-broker:
+    broker-uri: broker:(tcp://localhost:61616)?persistent=false
 ---
 spring:
   profiles: docker
   zipkin:
     base-url: http://zipkin-server:9411/
 
-jms-broker:
-  broker-uri: broker:(tcp://jms-broker:61616)?persistent=false
-
 hawtio:
   authenticationEnabled: false
 
@@ -60,3 +56,5 @@ unik:
   service:
     log:
       name: jms-broker
+  jms-broker:
+    broker-uri: broker:(tcp://jms-broker:61616)?persistent=false

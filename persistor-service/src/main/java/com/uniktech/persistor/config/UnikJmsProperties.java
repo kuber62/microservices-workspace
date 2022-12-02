@@ -7,4 +7,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "unik.jms-broker")
 public class UnikJmsProperties {
     private String inQueue;
+    private String brokerUri;
 }

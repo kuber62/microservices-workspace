@@ -60,9 +60,6 @@ unik:
   service:
     log:
       name: api-gateway
-
-logging:
-  config: http://localhost:8999/config-server/default/master/logback-spring.xml
 ---
 spring:
   profiles: docker
@@ -128,6 +125,3 @@ unik:
   service:
     log:
       name: api-gateway
-
-logging:
-  config: http://cloud-config:8999/config-server/docker/master/logback-spring.xml

@@ -21,9 +21,6 @@ spring:
         enabled: true
     feign:
       enabled: true
-  activemq:
-    broker-url: tcp://localhost:61616
-    packages.trust-all: true
 
 unik:
   service:
@@ -32,6 +29,7 @@ unik:
   jms-broker:
     in-queue: ${spring.application.name}-IN
     out-queue: PERSISTOR-SERVICE-IN
+    broker-uri: tcp://localhost:61616
 
 eureka:
   client:
@@ -39,9 +37,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
-
-logging:
-  config: http://localhost:8999/config-server/default/master/logback-spring.xml
 ---
 spring:
   profiles: docker
@@ -58,9 +53,6 @@ spring:
         enabled: true
     feign:
       enabled: true
-  activemq:
-    broker-url: tcp://jms-broker:61616
-    packages.trust-all: true
 
 unik:
   service:
@@ -69,6 +61,7 @@ unik:
   jms-broker:
     in-queue: ${spring.application.name}-IN
     out-queue: PERSISTOR-SERVICE-IN
+    broker-uri: tcp://jms-broker:61616
 
 eureka:
   client:
@@ -86,6 +79,3 @@ feign:
 
 server:
   port: 9001
-
-logging:
-  config: http://cloud-config:8999/config-server/docker/master/logback-spring.xml

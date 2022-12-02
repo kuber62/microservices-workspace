@@ -20,10 +20,12 @@ Below are the details of the components & Spring Boot related technologies used 
 
 8. Circuit Breaker - Spring Cloud Resilience4j
 
-9. Distributed Log Tracing - Spring Cloud Sleuth & Zipkin Stream Server - http://127.0.0.1:9411/
+9. Distributed Call Logs Tracing - Spring Cloud Sleuth
 
-10. Swagger
+10. Zipkin Stream Server - http://127.0.0.1:9411/
 
-11. Docker Containers
+11. Swagger
 
-12. Docker Compose
+12. Docker Containers
+
+13. Docker Compose
