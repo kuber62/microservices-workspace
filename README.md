@@ -2,6 +2,8 @@
 
 This repo will help someone to get an understanding of the components needed in a microservices architecture.
 
+mvn clean package -DskipTests=true dockerfile:push
+
 Below are the details of the components & Spring Boot related technologies used for development in this repo :-
 
 1. H2 - Embedded Relational Database
@@ -29,5 +31,3 @@ Below are the details of the components & Spring Boot related technologies used 
 12. Docker Containers
 
 13. Docker Compose
-
-mvn clean package -DskipTests=true dockerfile:push
