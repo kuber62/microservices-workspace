@@ -29,3 +29,5 @@ Below are the details of the components & Spring Boot related technologies used 
 12. Docker Containers
 
 13. Docker Compose
+
+mvn clean package -DskipTests=true dockerfile:push
