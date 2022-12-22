@@ -19,7 +19,7 @@ spring:
   application:
     name: API-GATEWAY
   config:
-    import: optional:configserver:http://localhost:8999
+    import: optional:configserver:http://localhost:8888
   zipkin:
     base-url: http://localhost:9411/
   cloud:
@@ -62,12 +62,12 @@ unik:
       name: api-gateway
 ---
 spring:
-  profiles: docker
+  config:
+    import: optional:configserver:http://cloud-config:8888
+    activate:
+      on-profile: docker
   application:
     name: API-GATEWAY
-  config:
-    import: optional:configserver:http://cloud-config:8999
-    use-legacy-processing: true
   zipkin:
     base-url: http://zipkin-server:9411/
   cloud:

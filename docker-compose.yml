@@ -1,6 +1,47 @@
-version: '3'
-
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    ports:
+      - "9200:9200"
+    environment:
+      - "discovery.type=single-node"
+    volumes:
+      - ./elasticsearch/data:/usr/share/elasticsearch/data:rw              # Persistence data
+    networks:
+      - default
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.2.0
+    ports:
+      - "25826:25826"
+      - "5044:5044"
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro                # Pipeline configuration
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+    networks:
+      - default
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.2.0
+    ports:
+      - "5601:5601"
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.2.0
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - ./filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro # Configuration file
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro           # Docker logs
+      - /var/run/docker.sock:/var/run/docker.sock:ro                       # Additional information about containers
+      - ./filebeat/data:/usr/share/filebeat/data:rw                        # Persistence data
+    user: root                                                             # Allow access to log files and docker.sock
+    restart: on-failure
+    depends_on:
+      - logstash
+    networks:
+      - default
   zipkin-server:
     image: openzipkin/zipkin
     ports:
@@ -8,21 +49,21 @@ services:
     networks:
       - default
   eureka-service-registry:
-    container_name: eureka-service-registry
-    build:
-      context: ./eureka-service-registry
-      dockerfile: Dockerfile
+    image: kuber62/service-registry
     ports:
       - "8761:8761"
     networks:
       - default
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   cloud-config:
-    container_name: cloud-config
+    container_name: cloud-config-server
     build:
       context: ./cloud-config-server
       dockerfile: Dockerfile
     ports:
-      - "8999:8999"
+      - "8888:8888"
     depends_on:
       - eureka-service-registry
     links:
@@ -30,11 +71,11 @@ services:
       - "eureka-service-registry"
     networks:
       - default
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   jms-broker:
-    container_name: jms-broker
-    build:
-      context: ./activemq-broker
-      dockerfile: Dockerfile
+    image: kuber62/activemq-broker
     ports:
       # ui
       - "9005:9005"
@@ -51,10 +92,7 @@ services:
     networks:
       - default
   api-gateway:
-    container_name: api-gateway
-    build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+    image: kuber62/api-gateway
     ports:
       - "9187:9187"
     depends_on:
@@ -66,11 +104,11 @@ services:
       - "cloud-config"
     networks:
       - default
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   persistor-service:
-    container_name: persistor-service
-    build:
-      context: ./persistor-service
-      dockerfile: Dockerfile
+    image: kuber62/persistor-service
     ports:
       - "9000:9000"
     depends_on:
@@ -85,11 +123,11 @@ services:
       - "api-gateway"
     networks:
       - default
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   department-service:
-    container_name: department-service
-    build:
-      context: ./department-service
-      dockerfile: Dockerfile
+    image: kuber62/department-service
     ports:
       - "9001:9001"
     depends_on:
@@ -104,11 +142,11 @@ services:
       - "api-gateway"
     networks:
       - default
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   user-service:
-    container_name: user-service
-    build:
-      context: ./user-service
-      dockerfile: Dockerfile
+    image: kuber62/user-service
     ports:
       - "9002:9002"
     depends_on:
@@ -123,13 +161,12 @@ services:
       - "api-gateway"
     networks:
       - default
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
 
 networks:
   default:
     driver: bridge
     driver_opts:
       com.docker.network.bridge.enable_icc: "true"
-      com.docker.network.bridge.enable_ip_masquerade: "false"
-      com.docker.network.bridge.host_binding_ipv4: "0.0.0.0"
-      com.docker.network.bridge.name: "br14"
-      com.docker.network.driver.mtu: "1500"

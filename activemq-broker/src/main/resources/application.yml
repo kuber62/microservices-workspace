@@ -31,7 +31,9 @@ unik:
     broker-uri: broker:(tcp://localhost:61616)?persistent=false
 ---
 spring:
-  profiles: docker
+  config:
+    activate:
+      on-profile: docker
   zipkin:
     base-url: http://zipkin-server:9411/
 

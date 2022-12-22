@@ -18,7 +18,9 @@ unik:
       name: eureka-service
 ---
 spring:
-  profiles: docker
+  config:
+    activate:
+      on-profile: docker
   application:
     name: eureka-service-registry
 

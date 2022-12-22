@@ -1,5 +1,5 @@
 server:
-  port: 8999
+  port: 8888
   
 spring:
   application:
@@ -15,6 +15,7 @@ spring:
           uri: https://github.com/kuber62/config-server.git
           clone-on-start: true
           default-label: master
+          basedir: /config
                
 eureka:
   client:
@@ -44,12 +45,15 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/kuber62/config-server.git
+          uri: git@github.com:kuber62/config-server.git
           clone-on-start: true
           default-label: master
+          basedir: /config
+          force-pull: true
+          strictHostKeyChecking: false
 
 server:
-  port: 8999
+  port: 8888
 
 eureka:
   client:
